@@ -2,6 +2,7 @@ import pygame
 import random
 from enum import Enum
 from collections import namedtuple
+import time
 
 pygame.init()
 font = pygame.font.SysFont('arial', 25)
@@ -81,8 +82,9 @@ class SnakeGame:
                       and self.move):
                     self.direction = Direction.DOWN
                     self.move = False
-                print(event) #----------------------------------------------------------------------------------
-        
+                data_dict = {"event_key": event.key, "time": time.time()}
+
+                print(data_dict)
 
         # 2. Move
         self._move(self.direction) # update the head
