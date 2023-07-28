@@ -55,6 +55,8 @@ class SnakeGame:
         self.food = Point(x, y)
         if self.food in self.snake:
             self._place_food()
+        food_position = {"food_x": x, "food_y": y, "time": time.time()}
+        print(food_position)
         
     def play_step(self):
         position_data = {"head_x": self.head.x, "head_y": self.head.y}
