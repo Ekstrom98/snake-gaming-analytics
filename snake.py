@@ -57,8 +57,6 @@ class SnakeGame:
         self.snake = [self.head, 
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
-        test = input("gamer tag")
-        print(test)
         self.score = 0
         init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
                       "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
@@ -187,15 +185,55 @@ class SnakeGame:
             
             
         self.head = Point(x, y)
-            
+   
+    def show_start_screen(self):
+        self.display.fill(BLACK)
+        text = font.render("Press any key to start the game!", True, WHITE)
+        self.display.blit(text, [150, self.h//2])
+        pygame.display.flip()
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYUP:
+                    waiting = False
+
+    def show_game_over_screen(self):
+        self.display.fill(BLACK)
+        text1 = font.render("GAME OVER", True, WHITE)
+        text2 = font.render("Your score: " + str(self.score), True, WHITE)
+        text3 = font.render("Press any key to play again!", True, WHITE)
+        self.display.blit(text1, [150, 150])
+        self.display.blit(text2, [150, 200])
+        self.display.blit(text3, [150, 250])
+        pygame.display.flip()
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYUP:
+                    waiting = False
+
 
 if __name__ == '__main__':
     game = SnakeGame()
-    
+    show_start_screen = True
+
     # game loop
     while True:
-        game_over, score = game.play_step()
-        
-        if game_over == True:
-            break
-    pygame.quit()
+        if show_start_screen:
+            game.show_start_screen()
+        while True:
+            game_over, score = game.play_step()
+
+            if game_over == True:
+                game.show_game_over_screen()
+                game = SnakeGame()  # reset the game
+                show_start_screen = False
+                break
