@@ -62,8 +62,10 @@ class SnakeGame:
                       "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
         print(init_data)
 
-        self.food = None
-        self._place_food()
+        self.init_state = True
+
+       # self.food = None
+        #self._place_food()
         
     def _place_food(self):
         x = random.randint(0, (self.w-BLOCK_SIZE )//BLOCK_SIZE )*BLOCK_SIZE 
@@ -76,7 +78,12 @@ class SnakeGame:
         
     def play_step(self):
         position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
-        print(position_data)
+        #print(position_data)
+
+        if self.init_state:
+            self.food = None
+            self._place_food()
+            self.init_state = False
 
         # 1. Collect user input
         for event in pygame.event.get():
