@@ -107,6 +107,8 @@ class SnakeGame:
         # 4. place new food or just move
         if self.head == self.food:
             self.score += 1
+            score_data = {"score": self.score, "time":time.time()}
+            print(score_data)
             self._place_food()
         else:
             self.snake.pop()
