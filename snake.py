@@ -3,6 +3,9 @@ import random
 from enum import Enum
 from collections import namedtuple
 import time
+import getpass
+import hashlib
+import platform
 
 pygame.init()
 font = pygame.font.SysFont('arial', 25)
@@ -31,6 +34,12 @@ class SnakeGame:
         self.w = w
         self.h = h
 
+        user = getpass.getuser()
+        user_encoded = user.encode("utf-8")
+        hasher = hashlib.sha256()
+        hasher.update(user_encoded + str(time.time()).encode("utf-8"))
+        self.game_id = hasher.hexdigest()
+
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption('Snake')
@@ -44,8 +53,12 @@ class SnakeGame:
         self.snake = [self.head, 
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
-        
+
         self.score = 0
+        init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
+                      "screen_height": self.h, "platform": platform.system()}
+        print(init_data)
+
         self.food = None
         self._place_food()
         
@@ -55,11 +68,11 @@ class SnakeGame:
         self.food = Point(x, y)
         if self.food in self.snake:
             self._place_food()
-        food_position = {"food_x": x, "food_y": y, "time": time.time()}
+        food_position = {"game_id": self.game_id,"food_x": x, "food_y": y, "time": time.time()}
         print(food_position)
         
     def play_step(self):
-        position_data = {"head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
+        position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
         print(position_data)
 
         # 1. Collect user input
@@ -88,9 +101,8 @@ class SnakeGame:
                       and self.move):
                     self.direction = Direction.DOWN
                     self.move = False
-                data_dict = {"event_key": event.key, "time": time.time()}
-
-                print(data_dict)
+                event_data = {"game_id": self.game_id, "event_key": event.key, "time": time.time()}
+                print(event_data)
 
         # 2. Move
         self._move(self.direction) # update the head
@@ -107,7 +119,7 @@ class SnakeGame:
         # 4. place new food or just move
         if self.head == self.food:
             self.score += 1
-            score_data = {"score": self.score, "time":time.time()}
+            score_data = {"game_id": self.game_id, "score": self.score, "time": time.time()}
             print(score_data)
             self._place_food()
         else:
