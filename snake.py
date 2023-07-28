@@ -27,10 +27,10 @@ SPEED = 20
 
 class SnakeGame:
     
-    def __init__(self, w=640, h=480, move=True):
+    def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
-        self.move = move
+
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption('Snake')
@@ -38,7 +38,8 @@ class SnakeGame:
         
         # init game state
         self.direction = Direction.RIGHT
-        
+        self.move = True
+
         self.head = Point(self.w/2, self.h/2)
         self.snake = [self.head, 
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
