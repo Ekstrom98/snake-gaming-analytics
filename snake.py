@@ -34,11 +34,15 @@ class SnakeGame:
         self.w = w
         self.h = h
 
+        # init user and game id
         user = getpass.getuser()
         user_encoded = user.encode("utf-8")
         hasher = hashlib.sha256()
         hasher.update(user_encoded + str(time.time()).encode("utf-8"))
         self.game_id = hasher.hexdigest()
+
+        # init collision type
+        self.collision_type = None
 
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
@@ -53,10 +57,11 @@ class SnakeGame:
         self.snake = [self.head, 
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
-
+        test = input("gamer tag")
+        print(test)
         self.score = 0
         init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
-                      "screen_height": self.h, "platform": platform.system()}
+                      "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
         print(init_data)
 
         self.food = None
@@ -68,7 +73,7 @@ class SnakeGame:
         self.food = Point(x, y)
         if self.food in self.snake:
             self._place_food()
-        food_position = {"game_id": self.game_id,"food_x": x, "food_y": y, "time": time.time()}
+        food_position = {"game_id": self.game_id, "food_x": x, "food_y": y, "time": time.time()}
         print(food_position)
         
     def play_step(self):
@@ -137,10 +142,20 @@ class SnakeGame:
             or self.head.x < 0 
             or self.head.y > self.h - BLOCK_SIZE 
             or self.head.y < 0):
+           self.collision_type = "boundary"
+
+           final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
+                               "time": time.time()}
+           print(final_score_data)
            return True
         
         # hits itself
         if self.head in self.snake[1:]:
+
+            self.collision_type = "self"
+            final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
+                               "time": time.time()}
+            print(final_score_data)
             return True
         
         return False
@@ -183,8 +198,4 @@ if __name__ == '__main__':
         
         if game_over == True:
             break
-        
-    print('Final Score', score)
-        
-        
     pygame.quit()
