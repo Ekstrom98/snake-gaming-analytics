@@ -57,6 +57,9 @@ class SnakeGame:
             self._place_food()
         
     def play_step(self):
+        position_data = {"head_x": self.head.x, "head_y": self.head.y}
+        print(position_data)
+
         # 1. Collect user input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
