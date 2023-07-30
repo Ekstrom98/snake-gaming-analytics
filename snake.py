@@ -62,8 +62,9 @@ class SnakeGame:
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
         self.score = 0
-        init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
-                      "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
+        init_data = {"game_id": self.game_id, "user": user, "player": player_name, 
+                     "screen_width": self.w, "screen_height": self.h, 
+                     "platform": platform.system(), "init_time": time.time()}
         print(init_data)
 
         self.init_state = True
@@ -198,7 +199,7 @@ class SnakeGame:
         self.display.fill(BLACK)
         text1 = font.render(f"Welcome {player_name}!", True, WHITE)
         self.display.blit(text1, [150, self.h//2-50])
-        text2 = font.render("Press any key to start the game!", True, WHITE)
+        text2 = font.render("Press any key to start the game", True, WHITE)
         self.display.blit(text2, [150, self.h//2])
         pygame.display.flip()
 
