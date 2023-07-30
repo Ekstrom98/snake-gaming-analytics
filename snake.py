@@ -8,8 +8,6 @@ from player import DefinePlayer
 player_window = DefinePlayer()
 player_window.run()
 player_name = player_window.player_name
-print(player_name)
-
 
 pygame.init()
 font = pygame.font.SysFont('arial', 25)
