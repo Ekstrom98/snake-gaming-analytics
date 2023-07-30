@@ -33,6 +33,7 @@ class SnakeGame:
     def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
+        self.player = input("Enter player name: ")
 
         # init user and game id
         user = getpass.getuser()
@@ -58,15 +59,12 @@ class SnakeGame:
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
         self.score = 0
-        init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
+        init_data = {"game_id": self.game_id, "user": user, "player": self.player, "screen_width": self.w,
                       "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
         print(init_data)
 
         self.init_state = True
 
-       # self.food = None
-        #self._place_food()
-        
     def _place_food(self):
         x = random.randint(0, (self.w-BLOCK_SIZE )//BLOCK_SIZE )*BLOCK_SIZE 
         y = random.randint(0, (self.h-BLOCK_SIZE )//BLOCK_SIZE )*BLOCK_SIZE
@@ -78,7 +76,7 @@ class SnakeGame:
         
     def play_step(self):
         position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
-        #print(position_data)
+        print(position_data)
 
         if self.init_state:
             self.food = None
@@ -229,18 +227,18 @@ class SnakeGame:
 
 
 if __name__ == '__main__':
-    game = SnakeGame()
+    #game = SnakeGame()
     show_start_screen = True
 
     # game loop
     while True:
         if show_start_screen:
+            game = SnakeGame()
             game.show_start_screen()
         while True:
             game_over, score = game.play_step()
 
             if game_over == True:
                 game.show_game_over_screen()
-                game = SnakeGame()  # reset the game
-                show_start_screen = False
+                show_start_screen = True
                 break
