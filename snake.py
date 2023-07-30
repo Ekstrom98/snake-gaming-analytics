@@ -1,11 +1,15 @@
-import pygame
+import pygame, random, time, getpass, hashlib, platform
 import random
 from enum import Enum
 from collections import namedtuple
-import time
-import getpass
-import hashlib
-import platform
+from player import DefinePlayer
+
+# Get user input for their desired player name
+player_window = DefinePlayer()
+player_window.run()
+player_name = player_window.player_name
+print(player_name)
+
 
 pygame.init()
 font = pygame.font.SysFont('arial', 25)
@@ -33,7 +37,6 @@ class SnakeGame:
     def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
-        self.player = input("Enter player name: ")
 
         # init user and game id
         user = getpass.getuser()
@@ -59,7 +62,7 @@ class SnakeGame:
                       Point(self.head.x-BLOCK_SIZE, self.head.y),
                       Point(self.head.x-(2*BLOCK_SIZE), self.head.y)]
         self.score = 0
-        init_data = {"game_id": self.game_id, "user": user, "player": self.player, "screen_width": self.w,
+        init_data = {"game_id": self.game_id, "user": user, "screen_width": self.w,
                       "screen_height": self.h, "platform": platform.system(), "init_time": time.time()}
         print(init_data)
 
@@ -193,8 +196,10 @@ class SnakeGame:
    
     def show_start_screen(self):
         self.display.fill(BLACK)
-        text = font.render("Press any key to start the game!", True, WHITE)
-        self.display.blit(text, [150, self.h//2])
+        text1 = font.render(f"Welcome {player_name}!", True, WHITE)
+        self.display.blit(text1, [150, self.h//2-50])
+        text2 = font.render("Press any key to start the game!", True, WHITE)
+        self.display.blit(text2, [150, self.h//2])
         pygame.display.flip()
 
         waiting = True
@@ -210,7 +215,7 @@ class SnakeGame:
         self.display.fill(BLACK)
         text1 = font.render("GAME OVER", True, WHITE)
         text2 = font.render("Your score: " + str(self.score), True, WHITE)
-        text3 = font.render("Press any key to play again!", True, WHITE)
+        text3 = font.render("Press any key to play again", True, WHITE)
         self.display.blit(text1, [150, 150])
         self.display.blit(text2, [150, 200])
         self.display.blit(text3, [150, 250])
@@ -227,9 +232,7 @@ class SnakeGame:
 
 
 if __name__ == '__main__':
-    #game = SnakeGame()
     show_start_screen = True
-
     # game loop
     while True:
         if show_start_screen:
