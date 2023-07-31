@@ -1,8 +1,15 @@
-import pygame, random, time, getpass, hashlib, platform
-import random
+import pygame, random, time, getpass, hashlib, platform, configparser, json
 from enum import Enum
 from collections import namedtuple
 from player import DefinePlayer
+from kafka import KafkaProducer
+
+config = configparser.ConfigParser()
+config.read('config.cfg')
+
+bootstrap_server = config['KAFKA']['bootstrap_server']
+kafka_producer = KafkaProducer(bootstrap_servers=bootstrap_server)
+
 
 # Get user input for their desired player name
 player_window = DefinePlayer()
