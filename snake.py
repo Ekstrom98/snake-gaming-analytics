@@ -70,6 +70,8 @@ class SnakeGame:
         init_data = {"game_id": self.game_id, "user": user, "player": player_name, 
                      "screen_width": self.w, "screen_height": self.h, 
                      "platform": platform.system(), "init_time": time.time()}
+        
+        kafka_producer.send('initialization', json.dumps(init_data).encode('utf-8'))
         print(init_data)
 
         self.init_state = True
@@ -81,10 +83,12 @@ class SnakeGame:
         if self.food in self.snake:
             self._place_food()
         food_position = {"game_id": self.game_id, "food_x": x, "food_y": y, "time": time.time()}
+        kafka_producer.send('food_positions', json.dumps(food_position).encode('utf-8'))
         print(food_position)
         
     def play_step(self):
         position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
+        kafka_producer.send('positions', json.dumps(position_data).encode('utf-8'))
         print(position_data)
 
         if self.init_state:
@@ -119,6 +123,7 @@ class SnakeGame:
                     self.direction = Direction.DOWN
                     self.move = False
                 event_data = {"game_id": self.game_id, "event_key": event.key, "time": time.time()}
+                kafka_producer.send('events', json.dumps(event_data).encode('utf-8'))
                 print(event_data)
 
         # 2. Move
@@ -137,6 +142,7 @@ class SnakeGame:
         if self.head == self.food:
             self.score += 1
             score_data = {"game_id": self.game_id, "score": self.score, "time": time.time()}
+            kafka_producer.send('scores', json.dumps(score_data).encode('utf-8'))
             print(score_data)
             self._place_food()
         else:
