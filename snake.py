@@ -181,8 +181,8 @@ class SnakeGame:
         """
 
         # Create position data and send it JSON serialized to the Kafka topic 'positions'
-        position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
-        kafka_producer.send('positions', json.dumps(position_data).encode('utf-8'))
+        snake_head_position_data = {"game_id": self.game_id, "head_x": self.head.x, "head_y": self.head.y, "time": time.time()}
+        kafka_producer.send('snake_head_positions', json.dumps(snake_head_position_data).encode('utf-8'))
 
         if self.init_state:
             self.food = None
@@ -282,7 +282,7 @@ class SnakeGame:
 
            final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
                                "time": time.time()}
-           kafka_producer.send('final_scores', json.dumps(final_score_data).encode('utf-8'))
+           kafka_producer.send('game_overs', json.dumps(final_score_data).encode('utf-8'))
            return True
         
         # Hits itself
@@ -291,7 +291,7 @@ class SnakeGame:
             self.collision_type = "self"
             final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
                                "time": time.time()}
-            kafka_producer.send('final_scores', json.dumps(final_score_data).encode('utf-8'))
+            kafka_producer.send('game_overs', json.dumps(final_score_data).encode('utf-8'))
             return True
         
         return False
