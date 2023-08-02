@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS initialization (
 id SERIAL PRIMARY KEY,
 game_id varchar(64),
-user varchar(50),
+"user" varchar(50),
 player varchar(50),
 screen_width smallint,
 screen_height smallint,
