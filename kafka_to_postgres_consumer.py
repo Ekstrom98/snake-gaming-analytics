@@ -62,7 +62,9 @@ def insert_data(insert_query, data_to_insert):
         print("Error: " + str(e))
 try:
     insert_values=True
-    i = 0
+    new_game_id = None
+    prev_game_id = None
+
     for msg in initialization_consumer:
             
         # Decoding the bytes to a string
@@ -74,12 +76,18 @@ try:
         # Extracting the data
         game_id = data_json['game_id']
 
-        if i == 0:
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "initializations", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
 
@@ -104,7 +112,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else:
                 pass
-        i += 1
+        
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic initializations transferred successfully.")
@@ -116,7 +124,8 @@ except Exception as e:
 
 try:
     insert_values = True  
-    i = 0
+    new_game_id = None
+    prev_game_id = None
     for msg in food_positions_consumer:
             
             
@@ -129,7 +138,13 @@ try:
         # Extracting the data
         game_id = data_json['game_id']
 
-        if i == 0:
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "food_positions", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
@@ -157,7 +172,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else:
             pass
-        i += 1
+        
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic food_positions transferred successfully.")
@@ -167,7 +182,8 @@ except Exception as e:
 
 try:
     insert_values = True
-    i = 0
+    new_game_id = None
+    prev_game_id = None
     for msg in snake_head_positions_consumer:
 
         # Decoding the bytes to a string
@@ -179,7 +195,13 @@ try:
         # Extracting the data
         game_id = data_json['game_id']
 
-        if i == 0:
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "snake_head_positions", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
@@ -206,7 +228,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else: 
             pass
-        i += 1
+        
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic snake_head_positions transferred successfully.")
@@ -216,7 +238,8 @@ except Exception as e:
 
 try:
     insert_values = True
-    i = 0
+    new_game_id = None
+    prev_game_id = None
     for msg in events_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -226,7 +249,14 @@ try:
 
         # Extracting the data
         game_id = data_json['game_id']
-        if i == 0:
+
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "events", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
@@ -252,7 +282,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else:
             pass
-        i += 1
+      
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic events transferred successfully.")
@@ -263,7 +293,8 @@ except Exception as e:
 
 try:
     insert_values = True
-    i = 0
+    new_game_id = None
+    prev_game_id = None
     for msg in scores_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -273,7 +304,14 @@ try:
 
         # Extracting the data
         game_id = data_json['game_id']
-        if i == 0:
+
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "scores", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
@@ -299,7 +337,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else:
             pass
-        i += 1
+     
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic scores transferred successfully.")
@@ -309,7 +347,8 @@ except Exception as e:
 
 try:
     insert_values = True
-    i = 0
+    new_game_id = None
+    prev_game_id = None
     for msg in game_overs_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -319,7 +358,14 @@ try:
 
         # Extracting the data
         game_id = data_json['game_id']
-        if i == 0:
+
+        if game_id == prev_game_id:
+            new_game_id = False
+        else:
+            new_game_id = True
+            prev_game_id = game_id
+
+        if new_game_id:
             game_id_already_inserted = check_if_game_id_exists(table = "game_overs", game_id = game_id)
             if game_id_already_inserted == True:
                 insert_values = False
@@ -346,7 +392,7 @@ try:
             insert_data(insert_query, data_to_insert)
         else:
             pass
-        i += 1
+       
     # Commit the changes to the database
     connection.commit()
     print("Data from the topic game_overs transferred successfully.")
