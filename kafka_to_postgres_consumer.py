@@ -149,7 +149,7 @@ try:
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
 
@@ -206,7 +206,7 @@ try:
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
         if insert_values == True:
@@ -261,7 +261,7 @@ try:
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
         if insert_values == True:
@@ -316,7 +316,7 @@ try:
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
         if insert_values == True:
@@ -370,7 +370,7 @@ try:
             if game_id_already_inserted == True:
                 insert_values = False
             else:
-                pass
+                insert_values = True
         else: 
             pass
         if insert_values == True:
@@ -403,3 +403,4 @@ except Exception as e:
 
 cursor.close()
 connection.close()
+print("All data has been transferred.")
