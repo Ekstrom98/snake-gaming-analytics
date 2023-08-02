@@ -280,7 +280,7 @@ class SnakeGame:
             or self.head.y < 0):
            self.collision_type = "boundary"
 
-           final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
+           final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "score": self.score,
                                "time": time.time()}
            kafka_producer.send('game_overs', json.dumps(final_score_data).encode('utf-8'))
            return True
@@ -289,7 +289,7 @@ class SnakeGame:
         if self.head in self.snake[1:]:
 
             self.collision_type = "self"
-            final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "final_score": self.score,
+            final_score_data = {"game_id": self.game_id, "collision_type": self.collision_type, "score": self.score,
                                "time": time.time()}
             kafka_producer.send('game_overs', json.dumps(final_score_data).encode('utf-8'))
             return True
