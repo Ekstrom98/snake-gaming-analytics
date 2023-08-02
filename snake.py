@@ -113,7 +113,7 @@ class SnakeGame:
         self.score = 0
 
         # Create initialization data and send it JSON serialized to the Kafka topic 'initialization'
-        init_data = {"game_id": self.game_id, "user": user, "player": player_name, 
+        init_data = {"game_id": self.game_id, "player": player_name, 
                      "screen_width": self.w, "screen_height": self.h, 
                      "platform": platform.system(), "init_time": time.time()}
         kafka_producer.send('initializations', json.dumps(init_data).encode('utf-8'))
