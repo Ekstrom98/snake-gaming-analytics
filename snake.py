@@ -116,7 +116,7 @@ class SnakeGame:
         init_data = {"game_id": self.game_id, "user": user, "player": player_name, 
                      "screen_width": self.w, "screen_height": self.h, 
                      "platform": platform.system(), "init_time": time.time()}
-        kafka_producer.send('initialization', json.dumps(init_data).encode('utf-8'))
+        kafka_producer.send('initializations', json.dumps(init_data).encode('utf-8'))
 
         self.init_state = True
 
