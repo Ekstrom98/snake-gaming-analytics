@@ -126,6 +126,31 @@ for msg in snake_head_positions_consumer:
 
         # Data to be inserted 
         data_to_insert = (f'{game_id}', f'{head_x}', f'{head_y}', f'{time}')
+
+        insert_data(cursor, connection, insert_query, data_to_insert)
+
+for msg in events_consumer:
+        # Decoding the bytes to a string
+        data_string = msg.value.decode('utf-8')
+
+        # Parsing the JSON string
+        data_json = json.loads(data_string)
+
+        # Extracting the data
+        game_id = data_json['game_id']
+        event_key = data_json['event_key']
+        time = data_json['time']
+        
+        # Convert Unix timestamp to a Python datetime object
+        time = datetime.utcfromtimestamp(time)
+        # Convert the datetime object to a string representation in PostgreSQL's timestamp format
+        time = time.strftime("%Y-%m-%d %H:%M:%S.%f")
+
+        # Define insert query
+        insert_query = "INSERT INTO events (game_id, event_key, time) VALUES (%s, %s, %s)"
+
+        # Data to be inserted 
+        data_to_insert = (f'{game_id}', f'{event_key}', f'{time}')
         
         insert_data(cursor, connection, insert_query, data_to_insert)
 
