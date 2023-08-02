@@ -45,12 +45,10 @@ def insert_data(cursor, connection, insert_query, data_to_insert):
 
         # Commit the changes to the database
         connection.commit()
-
-        print("Data inserted successfully!")
     except Exception as e:
         print("Failed to insert data.")
         print("Error: " + str(e))
-
+     
 for msg in initialization_consumer:
         #print(msg.topic, msg.offset, type(msg))
         # Decoding the bytes to a string
@@ -79,7 +77,32 @@ for msg in initialization_consumer:
 
         insert_data(cursor, connection, insert_query, data_to_insert)
 
-        
+for msg in food_positions_consumer:
+        # Decoding the bytes to a string
+        data_string = msg.value.decode('utf-8')
+
+        # Parsing the JSON string
+        data_json = json.loads(data_string)
+
+        # Extracting the data
+        game_id = data_json['game_id']
+        food_x = data_json['food_x']
+        food_y = data_json['food_y']
+        time = data_json['time']
+
+        # Convert Unix timestamp to a Python datetime object
+        time = datetime.utcfromtimestamp(time)
+        # Convert the datetime object to a string representation in PostgreSQL's timestamp format
+        time = time.strftime("%Y-%m-%d %H:%M:%S.%f")
+
+        # Define insert query
+        insert_query = "INSERT INTO food_positions (game_id, food_x, food_y, time) VALUES (%s, %s, %s, %s)"
+
+        # Data to be inserted 
+        data_to_insert = (f'{game_id}', f'{food_x}', f'{food_y}', f'{time}')
+
+        insert_data(cursor, connection, insert_query, data_to_insert)
+
 
 cursor.close()
 connection.close()
