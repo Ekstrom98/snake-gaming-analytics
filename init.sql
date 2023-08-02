@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS initialization (
+CREATE TABLE IF NOT EXISTS initializations (
 id SERIAL PRIMARY KEY,
 game_id varchar(64),
 "user" varchar(50),
@@ -39,7 +39,7 @@ score smallint,
 time timestamp
 );
 
-CREATE TABLE IF NOT EXISTS game_over (
+CREATE TABLE IF NOT EXISTS game_overs (
 id SERIAL PRIMARY KEY,
 game_id varchar(64),
 collision_type varchar(8),
