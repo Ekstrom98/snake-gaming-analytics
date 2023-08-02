@@ -1,4 +1,4 @@
-import pygame, random, time, getpass, hashlib, platform, configparser, json, subprocess
+import pygame, random, time, getpass, hashlib, platform, configparser, json, os
 from enum import Enum
 from collections import namedtuple
 from player import DefinePlayer
@@ -435,6 +435,9 @@ class SnakeGame:
                     waiting = False
 
  
+def transfer_game_data():
+    script_path = "kafka_to_postgres_consumer.py"
+    os.system(f'python3 {script_path}')
 
 if __name__ == '__main__':
     show_start_screen = True  # Flag to control whether to show the start screen
@@ -457,8 +460,8 @@ if __name__ == '__main__':
                     show_start_screen = True  # Set the flag to show the start screen in the next iteration
                     break  # Exit the inner loop to restart the game
     finally:
-        # Code outside the main game loop
-        script_path = "kafka_to_postgres_consumer.py"
+        # Close the Pygame display window
+        pygame.display.quit()
         pygame.quit()
-        # Run the script
-        subprocess.run(['python3', script_path])
+        # When closing down the game, start transferring Kafka data to Postgres DB.
+        transfer_game_data()
