@@ -1,4 +1,4 @@
-import pygame, random, time, getpass, hashlib, platform, configparser, json
+import pygame, random, time, getpass, hashlib, platform, configparser, json, subprocess
 from enum import Enum
 from collections import namedtuple
 from player import DefinePlayer
@@ -434,23 +434,31 @@ class SnakeGame:
                 if event.type == pygame.KEYUP:
                     waiting = False
 
+ 
+
 if __name__ == '__main__':
     show_start_screen = True  # Flag to control whether to show the start screen
-
-    # Game loop
-    while True:
-        # If the start screen should be displayed, initialize a new game and show the start screen
-        if show_start_screen:
-            game = SnakeGame()  # Create a new game instance
-            game.show_start_screen()  # Display the start screen
-            show_start_screen = False  # Reset the flag
-
-        # Main game loop
+    try:
+        # Game loop
         while True:
-            game_over, score = game.play_step()  # Play a single step of the game, returning game over status and score
+            # If the start screen should be displayed, initialize a new game and show the start screen
+            if show_start_screen:
+                game = SnakeGame()  # Create a new game instance
+                game.show_start_screen()  # Display the start screen
+                show_start_screen = False  # Reset the flag
 
-            # If the game is over, display the game over screen and prepare to show the start screen again
-            if game_over == True:
-                game.show_game_over_screen()  # Show the game over screen
-                show_start_screen = True  # Set the flag to show the start screen in the next iteration
-                break  # Exit the inner loop to restart the game
+            # Main game loop
+            while True:
+                game_over, score = game.play_step()  # Play a single step of the game, returning game over status and score
+
+                # If the game is over, display the game over screen and prepare to show the start screen again
+                if game_over == True:
+                    game.show_game_over_screen()  # Show the game over screen
+                    show_start_screen = True  # Set the flag to show the start screen in the next iteration
+                    break  # Exit the inner loop to restart the game
+    finally:
+        # Code outside the main game loop
+        script_path = "kafka_to_postgres_consumer.py"
+        pygame.quit()
+        # Run the script
+        subprocess.run(['python3', script_path])
