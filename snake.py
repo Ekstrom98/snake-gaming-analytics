@@ -113,10 +113,10 @@ class SnakeGame:
         self.score = 0
 
         # Create initialization data and send it JSON serialized to the Kafka topic 'initialization'
-        init_data = {"game_id": self.game_id, "player": player_name, 
+        self.init_data = {"game_id": self.game_id, "player": player_name, 
                      "screen_width": self.w, "screen_height": self.h, 
                      "platform": platform.system(), "init_time": time.time()}
-        kafka_producer.send('initializations', json.dumps(init_data).encode('utf-8'))
+        #kafka_producer.send('initializations', json.dumps(self.init_data).encode('utf-8'))
 
         self.init_state = True
 
@@ -186,6 +186,7 @@ class SnakeGame:
 
         if self.init_state:
             self.food = None
+            kafka_producer.send('initializations', json.dumps(self.init_data).encode('utf-8'))
             self._place_food()
             self.init_state = False
 
