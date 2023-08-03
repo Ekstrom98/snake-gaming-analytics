@@ -2,4 +2,4 @@ SELECT i.player, "go".score, "go".collision_type, TO_CHAR("go".time , 'YYYY-MM-D
 FROM game_overs go
 JOIN initializations i
 ON "go".game_id = i.game_id
-ORDER BY time DESC;
+ORDER BY "go".score DESC;
