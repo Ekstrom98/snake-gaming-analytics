@@ -1,5 +1,5 @@
 import streamlit as st
-from st_aggrid import AgGrid
+from streamlit_aggrid import AgGrid
 import pandas as pd
 
 st.set_page_config(
@@ -14,8 +14,8 @@ st.title("Snake Gaming Analytics")
 all_games = pd.read_csv("./query_results/get_all_games.csv")
 AgGrid(all_games)
 
-st.title("Best Player")
-col1, col2, col3 = st.columns(3)
-col1.metric("Best Score", f"{best_player_score}")
-col2.metric("Player", f"{best_player_name}")
-col3.metric("Date", f"{best_player_date}")
+# st.title("Best Player")
+# col1, col2, col3 = st.columns(3)
+# col1.metric("Best Score", f"{best_player_score}")
+# col2.metric("Player", f"{best_player_name}")
+# col3.metric("Date", f"{best_player_date}")
