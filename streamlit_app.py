@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_aggrid import AgGrid
+from st_aggrid import AgGrid
 import pandas as pd
 
 st.set_page_config(
