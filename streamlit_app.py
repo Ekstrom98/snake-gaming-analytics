@@ -11,7 +11,8 @@ st.title("Snake Gaming Analytics")
 
 
 all_games = pd.read_csv("./query_results/get_all_games.csv", 
-                        usecols=['Player', 'Collision Type','Datetime'])
+                        usecols=['Player', 'Collision Type','Datetime'],
+                        header=None)
 st.dataframe(all_games)
 
 # st.title("Best Player")
