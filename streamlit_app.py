@@ -10,7 +10,8 @@ st.set_page_config(
 st.title("Snake Gaming Analytics")
 
 
-all_games = pd.read_csv("./query_results/get_all_games.csv")
+all_games = pd.read_csv("./query_results/get_all_games.csv", 
+                        columns=['Player', 'Collision Type','Datetime'], header=False)
 st.dataframe(all_games)
 
 # st.title("Best Player")
