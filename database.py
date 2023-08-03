@@ -12,21 +12,37 @@ class database:
         self.PORT = config['POSTGRES']['PORT']
         self.connection = None
 
-    def connect(self):
-        try:
-            print("Initializing connection to database...")
-            self.connection = psycopg2.connect(
-            user=self.POSTGRES_USER,
-            password=self.POSTGRES_PASSWORD,
-            host=self.HOST,
-            port=self.PORT,
-            database=self.POSTGRES_DB
-        )
-            print("Connection successful!")
-            return self.connection
-        except Exception as e:
-            print("Failed to connect to the database.")
-            print("Error: " + str(e))
+    def connect(self, return_connection = False):
+        if return_connection:
+
+            try:
+                print("Initializing connection to database...")
+                self.connection = psycopg2.connect(
+                user=self.POSTGRES_USER,
+                password=self.POSTGRES_PASSWORD,
+                host=self.HOST,
+                port=self.PORT,
+                database=self.POSTGRES_DB
+            )
+                print("Connection successful!")
+                return self.connection
+            except Exception as e:
+                print("Failed to connect to the database.")
+                print("Error: " + str(e))
+        else:
+            try:
+                print("Initializing connection to database...")
+                self.connection = psycopg2.connect(
+                user=self.POSTGRES_USER,
+                password=self.POSTGRES_PASSWORD,
+                host=self.HOST,
+                port=self.PORT,
+                database=self.POSTGRES_DB
+                )
+                print("Connection successful!")
+            except Exception as e:
+                print("Failed to connect to the database.")
+                print("Error: " + str(e))
 
     def disconnect(self):
         try:
@@ -58,9 +74,9 @@ class database:
         return cursor.fetchall()
 
  # Test code
-test = database()
-a = test.connect()
-print(a)
-results = test.execute_sql_script("./sql/top_3.sql")
-print(results)
-test.disconnect()
+# test = database()
+# a = test.connect()
+# print(a)
+# results = test.execute_sql_script("./sql/top_3.sql")
+# print(results)
+# test.disconnect()
