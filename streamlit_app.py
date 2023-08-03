@@ -1,5 +1,4 @@
 import streamlit as st
-from st_aggrid import AgGrid
 import pandas as pd
 
 st.set_page_config(
@@ -12,7 +11,7 @@ st.title("Snake Gaming Analytics")
 
 
 all_games = pd.read_csv("./query_results/get_all_games.csv")
-AgGrid(all_games)
+st.dataframe(all_games)
 
 # st.title("Best Player")
 # col1, col2, col3 = st.columns(3)
