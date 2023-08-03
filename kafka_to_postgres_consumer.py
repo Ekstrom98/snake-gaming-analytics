@@ -7,12 +7,6 @@ from database import database
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
-# POSTGRES_USER = config['POSTGRES']['POSTGRES_USER']
-# POSTGRES_PASSWORD = config['POSTGRES']['POSTGRES_PASSWORD']
-# POSTGRES_DB = config['POSTGRES']['POSTGRES_DB']
-# HOST = config['POSTGRES']['HOST']
-# PORT = config['POSTGRES']['PORT']
-
 bootstrap_server = config['KAFKA']['bootstrap_server']
 
 initialization_consumer = KafkaConsumer('initializations', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
@@ -22,22 +16,10 @@ events_consumer = KafkaConsumer('events', bootstrap_servers=bootstrap_server, au
 scores_consumer = KafkaConsumer('scores', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 game_overs_consumer = KafkaConsumer('game_overs', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 
-# try:
-#     print("Initializing connection to database...")
-#     connection = psycopg2.connect(
-#     user=POSTGRES_USER,
-#     password=POSTGRES_PASSWORD,
-#     host=HOST,
-#     port=PORT,
-#     database=POSTGRES_DB
-# )
-#     print("Connection successful!")
-# except Exception as e:
-#     print("Failed to connect to the database.")
-#     print("Error: " + str(e))
 
 database = database()
-connection = database.connect()
+connection = database.connect(return_connection=True)
+
 cursor = connection.cursor()
 
 def check_if_game_id_exists(table, game_id):
