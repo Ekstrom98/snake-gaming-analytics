@@ -22,6 +22,7 @@ scores_consumer = KafkaConsumer('scores', bootstrap_servers=bootstrap_server, au
 game_overs_consumer = KafkaConsumer('game_overs', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 
 try:
+    print("Initializing connection to database...")
     connection = psycopg2.connect(
     user=POSTGRES_USER,
     password=POSTGRES_PASSWORD,
@@ -60,6 +61,7 @@ def insert_data(insert_query, data_to_insert):
     except Exception as e:
         print("Failed to insert data.")
         print("Error: " + str(e))
+print("Starting data transfer...")
 try:
     insert_values=True
     new_game_id = None
