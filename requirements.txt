@@ -116,6 +116,7 @@ pycparser==2.21
 pydantic==1.10.5
 pydeck==0.8.0
 pyee==8.2.2
+pygame==2.5.0
 Pygments==2.14.0
 pyheif==0.7.1
 Pympler==1.0.1
@@ -124,6 +125,7 @@ pyppeteer==1.0.2
 pyrsistent==0.19.3
 PySocks==1.7.1
 python-dateutil==2.8.2
+python-decouple==3.8
 python-dotenv==1.0.0
 python-json-logger==2.0.7
 pytz==2022.7.1
@@ -149,6 +151,7 @@ soupsieve==2.4
 stack-data==0.6.2
 starlette==0.25.0
 streamlit==1.25.0
+streamlit-aggrid==0.3.4.post3
 tenacity==8.2.2
 terminado==0.17.1
 tinycss2==1.2.1
