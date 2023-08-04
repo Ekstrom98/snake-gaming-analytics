@@ -15,10 +15,44 @@ all_games = pd.read_csv("./query_results/get_all_games.csv",
                         header=None)
 all_games.columns = ['Player', 'Score', 'Collision Type', 'Datetime']
 
-st.dataframe(all_games)
 
-# st.title("Best Player")
-# col1, col2, col3 = st.columns(3)
-# col1.metric("Best Score", f"{best_player_score}")
-# col2.metric("Player", f"{best_player_name}")
-# col3.metric("Date", f"{best_player_date}")
+#--------------------------------------------------CREATE TWO COLUMNS--------------------------------------------------#
+col1, col2 = st.columns(2)
+
+#---------------PLAYER SELECTION BOX---------------#
+# Create a list of player names with an "All Players" option
+player_options = ["All players"] + list(all_games['Player'].unique())
+# Create a select box with the player options
+selected_player = col2.selectbox('Select a player:', player_options)
+
+# Filter the dataframe based on the selected player, unless "All Players" is selected
+if selected_player == "All players":
+    filtered_games = all_games
+else:
+    filtered_games = all_games[all_games['Player'] == selected_player]
+#--------------------------------------------------#
+
+#-------------------SCORE SLIDER-------------------#
+min_score, max_score = col2.slider('Select a score range', 
+                                   min_value=all_games['Score'].min(), 
+                                   max_value=all_games['Score'].max(), 
+                                   value=(all_games['Score'].min(), all_games['Score'].max()))
+filtered_games = filtered_games[(filtered_games['Score'] >= min_score) & (filtered_games['Score'] <= max_score)]
+#--------------------------------------------------#
+
+#---------------COLLISION TYPE SELECTION BOX---------------#
+# Create a list of collision types with an "All Collisions" option
+collision_options = ["All collision types"] + list(all_games['Collision Type'].unique())
+# Create a select box with the collision type options
+selected_collision = col2.selectbox('Select a collision type:', collision_options)
+
+# Filter the dataframe based on the selected player, unless "All Players" is selected
+if selected_collision == "All collision types":
+    # Show everything (i.e, don't filter the data)
+    filtered_games=filtered_games
+else:
+    filtered_games = filtered_games[filtered_games['Collision Type'] == selected_collision]
+#----------------------------------------------------------#
+
+col1.dataframe(filtered_games)
+#----------------------------------------------------------------------------------------------------------------------#
