@@ -79,10 +79,6 @@ class SnakeGame:
             - The 'kafka_producer' is a Kafka producer object.
             - The method uses system information like the current user and platform for fetching data about who the user is and which platform they use to play.
 
-        Example:
-            game = Game(w=800, h=600)
-            This line creates a new game instance with a window size of 800 by 600 pixels.
-
         """
         self.w = w
         self.h = h
