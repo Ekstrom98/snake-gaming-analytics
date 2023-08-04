@@ -1,8 +1,7 @@
-import psycopg2, configparser, json
+import psycopg2, configparser, json, subprocess, time
 from kafka import KafkaConsumer
 from datetime import datetime
 from database import database
-import subprocess
 
 # Read configuration from 'config.cfg' file
 config = configparser.ConfigParser()
@@ -12,7 +11,7 @@ bootstrap_server = config['KAFKA']['BOOTSTRAP_SERVER']
 
 initialization_consumer = KafkaConsumer('initializations', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 food_positions_consumer = KafkaConsumer('food_positions', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
-snake_head_positions_consumer = KafkaConsumer('snake_head_positions', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=6000)
+snake_head_positions_consumer = KafkaConsumer('snake_head_positions', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 events_consumer = KafkaConsumer('events', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 scores_consumer = KafkaConsumer('scores', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 game_overs_consumer = KafkaConsumer('game_overs', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
@@ -52,7 +51,7 @@ try:
     insert_values=True
     new_game_id = None
     prev_game_id = None
-
+    start_time = time.time()
     for msg in initialization_consumer:
             
         # Decoding the bytes to a string
@@ -103,7 +102,8 @@ try:
         
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic initializations transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic initializations transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
     print("Data could not be transferred correctly from the topic initializations.")
     print("Error: " + str(e))
@@ -114,6 +114,7 @@ try:
     insert_values = True  
     new_game_id = None
     prev_game_id = None
+    start_time = time.time()
     for msg in food_positions_consumer:
             
             
@@ -163,7 +164,8 @@ try:
         
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic food_positions transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic food_positions transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
      print("Data could not be transferred correctly from the topic food_positions.")
      print("Error: " + str(e))
@@ -172,6 +174,7 @@ try:
     insert_values = True
     new_game_id = None
     prev_game_id = None
+    start_time = time.time()
     for msg in snake_head_positions_consumer:
 
         # Decoding the bytes to a string
@@ -219,7 +222,8 @@ try:
         
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic snake_head_positions transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic snake_head_positions transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
      print("Data could not be transferred correctly from the topic snake_head_positions.")
      print("Error: " + str(e))
@@ -228,6 +232,7 @@ try:
     insert_values = True
     new_game_id = None
     prev_game_id = None
+    start_time = time.time()
     for msg in events_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -273,7 +278,8 @@ try:
       
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic events transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic events transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
      print("Data could not be transferred correctly from the topic events.")
      print("Error: " + str(e))
@@ -283,6 +289,7 @@ try:
     insert_values = True
     new_game_id = None
     prev_game_id = None
+    start_time = time.time()
     for msg in scores_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -328,7 +335,8 @@ try:
      
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic scores transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic scores transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
      print("Data could not be transferred correctly from the topic scores.")
      print("Error: " + str(e))
@@ -337,6 +345,7 @@ try:
     insert_values = True
     new_game_id = None
     prev_game_id = None
+    start_time = time.time()
     for msg in game_overs_consumer:
         # Decoding the bytes to a string
         data_string = msg.value.decode('utf-8')
@@ -383,7 +392,8 @@ try:
        
     # Commit the changes to the database
     connection.commit()
-    print("Data from the topic game_overs transferred successfully.")
+    end_time = time.time()
+    print(f"Data from the topic game_overs transferred successfully. The transfer took {round(end_time-start_time,1)} second(s).")
 except Exception as e:
      print("Data could not be transferred correctly from the topic game_overs.")
      print("Error: " + str(e))
