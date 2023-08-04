@@ -2,6 +2,7 @@ import psycopg2, configparser, json
 from kafka import KafkaConsumer
 from datetime import datetime
 from database import database
+import subprocess
 
 # Read configuration from 'config.cfg' file
 config = configparser.ConfigParser()
@@ -391,3 +392,4 @@ except Exception as e:
 cursor.close()
 connection.close()
 print("All data has been transferred.")
+subprocess.run(['python3', 'query_database.py'])
