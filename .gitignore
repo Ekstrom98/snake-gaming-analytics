@@ -6,3 +6,4 @@ test.py
 secrets.toml
 .streamlit
 streamlit_app_local.py
+backups
