@@ -93,6 +93,7 @@ class database:
                         print(f"Command failed: {result.stderr.decode()}")
                     else:
                         print(result.stdout.decode())
+                        print(f"The table {table} has been successfully copied.")
 
             except Exception as e:
                  print(f"Command skipped: {str(e)}")
