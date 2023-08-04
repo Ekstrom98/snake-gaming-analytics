@@ -70,5 +70,16 @@ max_selected = int(filtered_games['Score'].max())
 max_all = int(all_games['Score'].max())
 
 col3.metric('Average score', avg_score_selected, round(avg_score_selected-avg_score_all,1))
-col4.metric('Standard deviation of score',std_selected, round(std_selected-std_all,1))
+col4.metric('Standard deviation of score',std_selected, round(std_selected-std_all,1), delta_color="inverse")
 col5.metric('Top score', max_selected, max_selected-max_all)
+
+col6, col7, col8 = st.columns(3)
+
+games_played = int(len(filtered_games))
+games_played_total = int(len(all_games))
+played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
+
+
+col6.metric('Games played', games_played)
+col7.metric('Playing time', 'T.B.D.')
+col8.metric('T.B.D.', 'T.B.D.')
