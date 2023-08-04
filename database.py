@@ -2,14 +2,14 @@ import psycopg2, configparser
 class database:
     def __init__(self):
         # Read configuration from 'config.cfg' file
-        config = configparser.ConfigParser()
-        config.read('config.cfg')
+        self.config = configparser.ConfigParser()
+        self.config.read('config.cfg')
 
-        self.POSTGRES_USER = config['POSTGRES']['POSTGRES_USER']
-        self.POSTGRES_PASSWORD = config['POSTGRES']['POSTGRES_PASSWORD']
-        self.POSTGRES_DB = config['POSTGRES']['POSTGRES_DB']
-        self.HOST = config['POSTGRES']['HOST']
-        self.PORT = config['POSTGRES']['PORT']
+        self.POSTGRES_USER = self.config['POSTGRES']['POSTGRES_USER']
+        self.POSTGRES_PASSWORD = self.config['POSTGRES']['POSTGRES_PASSWORD']
+        self.POSTGRES_DB = self.config['POSTGRES']['POSTGRES_DB']
+        self.HOST = self.config['POSTGRES']['HOST']
+        self.PORT = self.config['POSTGRES']['PORT']
         self.connection = None
 
     def connect(self, return_connection = False):
@@ -71,11 +71,28 @@ class database:
                         print(f"Command skipped: {str(e)}")
         
         return cursor.fetchall()
+    
+    def backup_data(self):
+        import subprocess
+        
+        connection_str = f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.HOST}:{self.PORT}/{self.POSTGRES_DB}"
+        
+        with open('./sql/data_backup.sql', 'r') as file:
+            sql_commands = file.read().split(';')
 
- # Test code
-# test = database()
-# a = test.connect()
-# print(a)
-# results = test.execute_sql_script("./sql/top_3.sql")
-# print(results)
-# test.disconnect()
+        for command in sql_commands:
+            try:
+                if command.strip() != '':
+                    table = command.split(' ')[1]
+                    print(f"Copying table {table}...")
+                    backup_path = self.config['BACKUP'][f'{table.upper()}']
+                    command = command.format(path=backup_path)
+                    result = subprocess.run(['psql', connection_str], input=command.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+                    if result.returncode != 0:
+                        print(f"Command failed: {result.stderr.decode()}")
+                    else:
+                        print(result.stdout.decode())
+
+            except Exception as e:
+                 print(f"Command skipped: {str(e)}")
