@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import math
 
 st.set_page_config(
     page_title="Snake Gaming Analytics",
@@ -8,7 +9,7 @@ st.set_page_config(
 )
 
 st.title("Snake Gaming Analytics")
-
+st.markdown("---")
 
 all_games = pd.read_csv("./query_results/get_all_games.csv", 
                         usecols=[0, 1, 2, 3],
@@ -56,3 +57,18 @@ else:
 
 col1.dataframe(filtered_games)
 #----------------------------------------------------------------------------------------------------------------------#
+
+st.markdown('---')
+st.header(f'Metrics for {selected_player}')
+col3, col4, col5 = st.columns(3)
+
+avg_score_selected = round(filtered_games['Score'].mean(),1)
+avg_score_all = round(all_games['Score'].mean(),1)
+std_selected = round(filtered_games['Score'].std(),1)
+std_all = round(all_games['Score'].std(),1)
+max_selected = int(filtered_games['Score'].max())
+max_all = int(all_games['Score'].max())
+
+col3.metric('Average score', avg_score_selected, round(avg_score_selected-avg_score_all,1))
+col4.metric('Standard deviation of score',std_selected, round(std_selected-std_all,1))
+col5.metric('Top score', max_selected, max_selected-max_all)
