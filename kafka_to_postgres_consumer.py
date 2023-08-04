@@ -8,7 +8,7 @@ import subprocess
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
-bootstrap_server = config['KAFKA']['bootstrap_server']
+bootstrap_server = config['KAFKA']['BOOTSTRAP_SERVER']
 
 initialization_consumer = KafkaConsumer('initializations', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
 food_positions_consumer = KafkaConsumer('food_positions', bootstrap_servers=bootstrap_server, auto_offset_reset='earliest', consumer_timeout_ms=1000)
