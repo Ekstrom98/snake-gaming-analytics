@@ -92,8 +92,9 @@ class database:
                     if result.returncode != 0:
                         print(f"Command failed: {result.stderr.decode()}")
                     else:
-                        print(result.stdout.decode())
                         print(f"The table {table} has been successfully copied.")
+                        print("Number of records copied:")
+                        print(result.stdout.decode().split('COPY ')[1])
 
             except Exception as e:
                  print(f"Command skipped: {str(e)}")
