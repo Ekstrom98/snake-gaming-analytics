@@ -9,7 +9,7 @@ config = configparser.ConfigParser()
 config.read('config.cfg')
 
 # Retrieve Kafka bootstrap server from the configuration and create a Kafka producer
-bootstrap_server = config['KAFKA']['bootstrap_server']
+bootstrap_server = config['KAFKA']['BOOTSTRAP_SERVER']
 kafka_producer = KafkaProducer(bootstrap_servers=bootstrap_server)
 
 
