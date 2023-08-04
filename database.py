@@ -14,7 +14,6 @@ class database:
 
     def connect(self, return_connection = False):
         if return_connection:
-
             try:
                 print("Initializing connection to database...")
                 self.connection = psycopg2.connect(
