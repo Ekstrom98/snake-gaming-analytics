@@ -21,6 +21,14 @@ with open('./query_results/get_all_games.csv', 'w', newline='') as file:
     for result in get_all_games:
         writer.writerow(result)
 
+# Execute script to obtain csv file with all game durations
+time_played = db.execute_sql_script("./sql/time_played.sql")
+with open('./query_results/time_played.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    # Write the results to the CSV file
+    for result in time_played:
+        writer.writerow(result)
+
 db.disconnect()
 
 # Adding the specified folder
