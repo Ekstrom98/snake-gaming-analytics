@@ -76,8 +76,16 @@ col6, col7, col8 = st.columns(3)
 games_played = int(len(filtered_games))
 games_played_total = int(len(all_games))
 played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
-time_played_total = filtered_games['Duration'].mean()
+time_played_average = filtered_games['Duration'].mean()
+time_played_total = filtered_games['Duration'].sum()
 
 col6.metric('Games played', games_played)
-col7.metric('Average game duration [seconds]', round(time_played_total, 0))
-col8.metric('T.B.D.', 'T.B.D.')
+if time_played_average < 60:
+    col7.metric('Average game duration', str(round(time_played_average, 0)) + " sec")
+else:
+    col7.metric('Average game duration', str(round(time_played_average/60, 0)) + " min")
+
+if time_played_total < 60:
+    col8.metric('Total playing time', str(round(time_played_total, 0)) + " sec")
+else:
+    col8.metric('Total playing time', str(round(time_played_total/60, 0)) + " min")
