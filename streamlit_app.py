@@ -58,6 +58,8 @@ col1.dataframe(filtered_games)
 
 st.markdown('---')
 st.header(f'Metrics for {selected_player}')
+st.text(f"Filtered by\ncollision type: {selected_collision}\nand\nscore range: {min_score} to {max_score} points")
+
 col3, col4, col5 = st.columns(3)
 
 avg_score_selected = round(filtered_games['Score'].mean(),1)
