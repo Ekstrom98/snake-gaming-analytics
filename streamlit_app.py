@@ -81,11 +81,11 @@ time_played_total = filtered_games['Duration'].sum()
 
 col6.metric('Games played', games_played)
 if time_played_average < 60:
-    col7.metric('Average game duration', str(round(time_played_average, 0)) + " sec")
+    col7.metric('Average game duration', str(int(round(time_played_average, 0))) + " sec")
 else:
-    col7.metric('Average game duration', str(round(time_played_average/60, 0)) + " min")
+    col7.metric('Average game duration', str(round(time_played_average/60, 1)) + " min")
 
 if time_played_total < 60:
-    col8.metric('Total playing time', str(round(time_played_total, 0)) + " sec")
+    col8.metric('Total playing time', str(int(round(time_played_total, 0))) + " sec")
 else:
-    col8.metric('Total playing time', str(round(time_played_total/60, 0)) + " min")
+    col8.metric('Total playing time', str(round(time_played_total/60, 1)) + " min")
