@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import math
 
 st.set_page_config(
     page_title="Snake Gaming Analytics",
@@ -12,9 +11,8 @@ st.title("Snake Gaming Analytics")
 st.markdown("---")
 
 all_games = pd.read_csv("./query_results/get_all_games.csv", 
-                        usecols=[0, 1, 2, 3],
-                        header=None)
-all_games.columns = ['Player', 'Score', 'Collision Type', 'Datetime']
+                        usecols=[0, 1, 2, 3, 4], header=None)
+all_games.columns = ['Player', 'Score', 'Collision Type', 'Duration', 'Datetime']
 
 
 #--------------------------------------------------CREATE TWO COLUMNS--------------------------------------------------#
@@ -78,8 +76,8 @@ col6, col7, col8 = st.columns(3)
 games_played = int(len(filtered_games))
 games_played_total = int(len(all_games))
 played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
-
+time_played_total = filtered_games['Duration'].mean()
 
 col6.metric('Games played', games_played)
-col7.metric('Playing time', 'T.B.D.')
+col7.metric('Average game duration', time_played_total)
 col8.metric('T.B.D.', 'T.B.D.')
