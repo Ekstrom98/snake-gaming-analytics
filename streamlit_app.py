@@ -58,7 +58,7 @@ col1.dataframe(filtered_games)
 
 st.markdown('---')
 st.header(f'Metrics for {selected_player}')
-st.text(f"Filtered by\ncollision type: {selected_collision}\nand\nscore range: {min_score} to {max_score} points")
+st.text(f"Filters applied\nCollision type: {selected_collision}\nScore range: {min_score} to {max_score} points")
 
 col3, col4, col5 = st.columns(3)
 
