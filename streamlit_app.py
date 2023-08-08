@@ -12,7 +12,7 @@ st.markdown("---")
 
 all_games = pd.read_csv("./query_results/get_all_games.csv", 
                         usecols=[0, 1, 2, 3, 4], header=None)
-all_games.columns = ['Player', 'Score', 'Collision Type', 'Duration', 'Datetime']
+all_games.columns = ['Player', 'Score', 'Collision Type', 'Duration [seconds]', 'Datetime']
 
 
 #--------------------------------------------------CREATE TWO COLUMNS--------------------------------------------------#
@@ -78,8 +78,8 @@ col6, col7, col8 = st.columns(3)
 games_played = int(len(filtered_games))
 games_played_total = int(len(all_games))
 played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
-time_played_average = filtered_games['Duration'].mean()
-time_played_total = filtered_games['Duration'].sum()
+time_played_average = filtered_games['Duration [seconds]'].mean()
+time_played_total = filtered_games['Duration [seconds]'].sum()
 
 col6.metric('Games played', games_played)
 if time_played_average < 60:
