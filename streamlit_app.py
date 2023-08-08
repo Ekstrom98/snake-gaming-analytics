@@ -79,5 +79,5 @@ played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
 time_played_total = filtered_games['Duration'].mean()
 
 col6.metric('Games played', games_played)
-col7.metric('Average game duration', time_played_total)
+col7.metric('Average game duration [seconds]', round(time_played_total, 1))
 col8.metric('T.B.D.', 'T.B.D.')
