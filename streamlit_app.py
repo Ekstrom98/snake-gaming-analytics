@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import math
 
 st.set_page_config(
     page_title="Snake Gaming Analytics",
@@ -32,11 +33,12 @@ else:
 #--------------------------------------------------#
 
 #-------------------SCORE SLIDER-------------------#
-min_score, max_score = col2.slider('Select a score range', 
-                                   min_value=all_games['Score'].min(), 
-                                   max_value=all_games['Score'].max(), 
-                                   value=(all_games['Score'].min(), all_games['Score'].max()))
+min_score, max_score = col2.slider('Select a score range:', 
+                                min_value=all_games['Score'].min(), 
+                                max_value=all_games['Score'].max(), 
+                                value=(all_games['Score'].min(), all_games['Score'].max()))
 filtered_games = filtered_games[(filtered_games['Score'] >= min_score) & (filtered_games['Score'] <= max_score)]
+
 #--------------------------------------------------#
 
 #---------------COLLISION TYPE SELECTION BOX---------------#
@@ -51,6 +53,7 @@ if selected_collision == "All collision types":
     filtered_games=filtered_games
 else:
     filtered_games = filtered_games[filtered_games['Collision Type'] == selected_collision]
+
 #----------------------------------------------------------#
 
 col1.dataframe(filtered_games)
@@ -60,34 +63,47 @@ st.markdown('---')
 st.header(f'Metrics for {selected_player}')
 st.text(f"Filters applied\nCollision type: {selected_collision}\nScore range: {min_score} to {max_score} points")
 
-col3, col4, col5 = st.columns(3)
+try:
+    col3, col4, col5 = st.columns(3)
 
-avg_score_selected = round(filtered_games['Score'].mean(),1)
-avg_score_all = round(all_games['Score'].mean(),1)
-std_selected = round(filtered_games['Score'].std(),1)
-std_all = round(all_games['Score'].std(),1)
-max_selected = int(filtered_games['Score'].max())
-max_all = int(all_games['Score'].max())
+    avg_score_selected = round(filtered_games['Score'].mean(),1)
+    avg_score_all = round(all_games['Score'].mean(),1)
+    std_selected = round(filtered_games['Score'].std(),1)
+    std_all = round(all_games['Score'].std(),1)
+    max_selected = int(filtered_games['Score'].max())
+    max_all = int(all_games['Score'].max())
 
-col3.metric('Average score', avg_score_selected, round(avg_score_selected-avg_score_all,1))
-col4.metric('Standard deviation of score',std_selected, round(std_selected-std_all,1), delta_color="inverse")
-col5.metric('Top score', max_selected, max_selected-max_all)
+    col3.metric('Average score', avg_score_selected, round(avg_score_selected-avg_score_all,1))
+    if(math.isnan(std_selected)==False):
+        col4.metric('Standard deviation of score', std_selected, round(std_selected-std_all,1), delta_color="inverse")
+    else:
+        col4.metric('Standard deviation of score', 'N/A')
+    col5.metric('Top score', max_selected, max_selected-max_all)
+except:
+    st.error("No records with the current filter were found.")
 
-col6, col7, col8 = st.columns(3)
 
-games_played = int(len(filtered_games))
-games_played_total = int(len(all_games))
-played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
-time_played_average = filtered_games['Duration [seconds]'].mean()
-time_played_total = filtered_games['Duration [seconds]'].sum()
+try:
+    col6, col7, col8 = st.columns(3)
 
-col6.metric('Games played', games_played)
-if time_played_average < 60:
-    col7.metric('Average game duration', str(int(round(time_played_average, 0))) + " sec")
-else:
-    col7.metric('Average game duration', str(round(time_played_average/60, 1)) + " min")
+    games_played = int(len(filtered_games))
+    games_played_total = int(len(all_games))
+    played_games_percent = str(round(games_played/games_played_total*100,1)) + "%"
+    time_played_average = filtered_games['Duration [seconds]'].mean()
+    time_played_total = filtered_games['Duration [seconds]'].sum()
 
-if time_played_total < 60:
-    col8.metric('Total playing time', str(int(round(time_played_total, 0))) + " sec")
-else:
-    col8.metric('Total playing time', str(round(time_played_total/60, 1)) + " min")
+    col6.metric('Games played', games_played)
+    if math.isnan(time_played_average) == False:
+        if time_played_average < 60:
+            col7.metric('Average game duration', str(int(round(time_played_average, 0))) + " sec")
+        else:
+            col7.metric('Average game duration', str(round(time_played_average/60, 1)) + " min")
+    else:
+        col7.metric('Average game duration', 'N/A')
+
+    if time_played_total < 60:
+        col8.metric('Total playing time', str(int(round(time_played_total, 0))) + " sec")
+    else:
+        col8.metric('Total playing time', str(round(time_played_total/60, 1)) + " min")
+except:
+    st.error("err")
